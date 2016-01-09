@@ -13,10 +13,23 @@ template <typename T>
 class Row
 {
 public:
-    Row(Array2D<T> & array, int row);
+    Row(Array2D<T> & _array, int row);
     T & operator [] (int column);
     
 private:
     Array2D<T> & m_array2D;
     int m_row;
 };
+
+template <typename T>
+Row<T>::Row(Array2D<T> & array, int row) : m_array2D(array), m_row(row)
+{
+    
+}
+
+template <typename T>
+T & Row<T>::operator[](int col)
+{
+    int index = (m_array2D._col-1) * m_row + col;
+    return m_array2D.m_array[index];
+}

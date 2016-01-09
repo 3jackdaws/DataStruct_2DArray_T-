@@ -8,10 +8,12 @@
 #pragma once
 #include "Row.h"
 #include "Array.h"
+#include "Exception.h"
 template <typename T>
 class Array2D
 {
 public:
+    friend class Row<T>;
     Array2D();
     Array2D(int row, int col);
     Array2D(const Array2D<T> & cp);
@@ -38,7 +40,7 @@ Array2D<T>::Array2D() : _col(0), _row(0)
 }
 
 template <typename T>
-Array2D<T>::Array2D(int row, int col) : _col(0), _row(0)
+Array2D<T>::Array2D(int row, int col) : _col(col), _row(row)
 {
     m_array.setLength(row*col);
 }
@@ -72,20 +74,52 @@ Array2D<T> & Array2D<T>::operator=(const Array2D<T> &rhs)
 template <typename T>
 Row<T> Array2D<T>::operator[](int index)
 {
-    return Row<T>(m_array, index);
+    Row<T> row(*this, index);
+    return row;
 }
 
 
 template <typename T>
 int Array2D<T>::getRow()
 {
-    
+    return _row;
 }
 
+template <typename T>
+void Array2D<T>::setRow(int rows)
+{
+    if(rows > 0)
+    {
+        _row = rows;
+    }
+    else{
+        throw Exception("InvalidRowNumberException");
+    }
+}
 
+template <typename T>
+int Array2D<T>::getColumn()
+{
+    return _col;
+}
 
+template <typename T>
+void Array2D<T>::setColumn(int col)
+{
+    if(col > 0)
+    {
+        _col = col;
+    }
+    else{
+        throw Exception("InvalidColumnNumberException");
+    }
+}
 
-
+template <typename T>
+T & Array2D<T>::Select(int row, int col)
+{
+    return m_array[row*col+col];
+}
 
 
 

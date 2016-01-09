@@ -41,3 +41,9 @@ void Exception::setMessage(char * msg)
     m_message = new char[strlen(msg)+1];
     strcpy(m_message, msg);
 }
+
+std::ostream & operator << (std::ostream & stream, const Exception & except)
+{
+    stream << except.m_message;
+    return stream;
+}
