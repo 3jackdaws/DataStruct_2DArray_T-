@@ -1,19 +1,19 @@
 #pragma once
 #include "Exception.h"
 template <typename T>
-class DynArray
+class Array
 {
 	T * m_array;
 	int m_length;
 	int m_start_index;
 public:
-	DynArray();
-	DynArray(int length, int start_index);
-	DynArray(const DynArray & copy);
+	Array();
+	Array(int length, int start_index);
+	Array(const Array & copy);
 
-	~DynArray();
+	~Array();
 
-	DynArray<T> & operator = (const DynArray & rhs);
+	Array<T> & operator = (const Array & rhs);
 	T & operator [] (int index);
 	int getStartIndex();
 	void setStartIndex(int index);
@@ -22,13 +22,13 @@ public:
 };
 
 template <typename T>
-DynArray<T>::DynArray() :m_array(nullptr), m_length(0), m_start_index(0)
+Array<T>::Array() :m_array(nullptr), m_length(0), m_start_index(0)
 {
 	
 }
 
 template <typename T>
-DynArray<T>::DynArray(int length, int start_index) : m_length(length), m_start_index(start_index)
+Array<T>::Array(int length, int start_index) : m_length(length), m_start_index(start_index)
 {
     if(length < 0)
         throw new Exception("NegativeLengthException");
@@ -40,7 +40,7 @@ DynArray<T>::DynArray(int length, int start_index) : m_length(length), m_start_i
 }
 
 template <typename T>
-DynArray<T>::DynArray(const DynArray<T> & cp): m_length(cp.m_length), m_start_index(cp.m_start_index)
+Array<T>::Array(const Array<T> & cp): m_length(cp.m_length), m_start_index(cp.m_start_index)
 {
     if(m_length>0)
     {
@@ -55,14 +55,14 @@ DynArray<T>::DynArray(const DynArray<T> & cp): m_length(cp.m_length), m_start_in
 }
 
 template <typename T>
-DynArray<T>::~DynArray()
+Array<T>::~Array()
 {
     delete[] m_array;
     m_array = nullptr;
 }
 
 template <typename T>
-DynArray<T> & DynArray<T>::operator = (const DynArray<T> & rhs)
+Array<T> & Array<T>::operator = (const Array<T> & rhs)
 {
     if(this != &rhs)
     {
@@ -83,7 +83,7 @@ DynArray<T> & DynArray<T>::operator = (const DynArray<T> & rhs)
 }
 
 template <typename T>
-T & DynArray<T>::operator [] (int index)
+T & Array<T>::operator [] (int index)
 {
 	if (index >= m_start_index + m_length || index < m_start_index)
 	{
@@ -93,25 +93,25 @@ T & DynArray<T>::operator [] (int index)
 }
 
 template <typename T>
-int DynArray<T>::getStartIndex()
+int Array<T>::getStartIndex()
 {
 	return m_start_index;
 }
 
 template <typename T>
-void DynArray<T>::setStartIndex(int index)
+void Array<T>::setStartIndex(int index)
 {
 	m_start_index = index;
 }
 
 template <typename T>
-int DynArray<T>::getLength()
+int Array<T>::getLength()
 {
 	return m_length;
 }
 
 template <typename T>
-void DynArray<T>::setLength(int new_len)
+void Array<T>::setLength(int new_len)
 {
     if(new_len < 0)
         throw new Exception("NegativeLengthException");

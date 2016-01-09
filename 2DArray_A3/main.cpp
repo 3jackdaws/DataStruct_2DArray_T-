@@ -7,9 +7,10 @@
 //
 
 #include <iostream>
-
-
+#include "Array2D.h"
 int main(int argc, const char * argv[]) {
+    
+    Array2D<int> myArray;
     
     return 0;
 }
