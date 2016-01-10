@@ -15,12 +15,17 @@ template <typename T>
 void DisplayContents(Array2D<T> &arr);
 
 template <typename T>
-void TestDuplication(Array2D<T> arr);
+void TestDuplication(Array2D<T> &arr);
 
 template <typename T>
 void TestSpecialCases(Array2D<T> &arr);
 
+template <typename T>
+void TestOtherFeatures(Array2D<T> &arr);
+
 int main() {
+    
+    //Initialize Array
     
     Array2D<int> myArray(5,5);
     int i = 0;
@@ -37,6 +42,8 @@ int main() {
     TestDuplication(myArray);
     
     TestSpecialCases(myArray);
+    
+    TestOtherFeatures(myArray);
     
     return 0;
 }
@@ -56,10 +63,10 @@ void DisplayContents(Array2D<T> &arr)
 }
 
 template <typename T>
-void TestDuplication(Array2D<T> arr)
+void TestDuplication(Array2D<T> &arr)
 {
     cout<<"************* TESTING COPY CTOR **************"<<endl;
-    cout<<"************* After pass by value ************"<<endl;
+    cout<<"************* After pass by reference ************"<<endl;
     DisplayContents(arr);
     
     Array2D<T> arr2(arr);
@@ -88,7 +95,39 @@ void TestSpecialCases(Array2D<T> &arr)
     try{
         cout<<arr[6][7]<<endl;
     }
-    catch(Exception e){
+    catch(Exception &e){
         cout<<e<<endl;
     }
+    
+    cout<<"************* Testing set column to -1 **************"<<endl;
+    
+    try{
+        arr.setColumn(-1);
+    }
+    catch(Exception &e){
+        cout<<e<<endl;
+    }
+    cout<<"************* Testing ser row to -1 **************"<<endl;
+    try{
+        arr.setRow(-1);
+    }
+    catch(Exception &e){
+        cout<<e<<endl;
+    }
+}
+
+template <typename T>
+void TestOtherFeatures(Array2D<T> &arr)
+{
+    cout<<"************* TESTING OTHER FEATURES **************"<<endl;
+    cout<<"************* Testing set lower bounds **************"<<endl;
+    arr.setRow(3);
+    arr.setColumn(2);
+    DisplayContents(arr);
+    
+    cout<<"\n************* Testing set higher bounds **************"<<endl;
+    arr.setRow(4);
+    arr.setColumn(6);
+    DisplayContents(arr);
+    
 }

@@ -13,6 +13,7 @@ Exception::Exception(char * msg)
 }
 Exception::Exception(const Exception & cp)
 {
+    m_message = new char[strlen(cp.m_message)+1];
     strcpy(m_message, cp.m_message);
 }
 

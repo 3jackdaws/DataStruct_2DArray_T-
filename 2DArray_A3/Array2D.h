@@ -88,9 +88,14 @@ int Array2D<T>::getRow()
 template <typename T>
 void Array2D<T>::setRow(int rows)
 {
-    if(rows > 0)
+    if(rows == _row)
+    {
+        
+    }
+    else if(rows > 0)
     {
         _row = rows;
+        m_array.setLength(_row*_col);
     }
     else{
         throw Exception("InvalidRowNumberException");
@@ -106,9 +111,14 @@ int Array2D<T>::getColumn()
 template <typename T>
 void Array2D<T>::setColumn(int col)
 {
-    if(col > 0)
+    if(col == _col)
+    {
+        
+    }
+    else if(col > 0)
     {
         _col = col;
+        m_array.setLength(_row*_col);
     }
     else{
         throw Exception("InvalidColumnNumberException");
