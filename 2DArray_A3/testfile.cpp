@@ -175,6 +175,6 @@ void TestConstness(const Array2D<T> &arr)
     cout<<"\n************* TESTING CONST METHODS **************"<<endl;
     cout<<"\n************* Testing modify const values **************\nBefore"<<endl;
     DisplayContents(arr);
-    //arr[0][0] = 90;       won't compile
+    //arr[0][0] = 90;       won't compile, doesn't allow assignment
     DisplayContents(arr);
 }
