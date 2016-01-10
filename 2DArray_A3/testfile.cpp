@@ -5,7 +5,7 @@
 //  Created by Ian Murphy on 1/8/16.
 //  Copyright © 2016 Ian Murphy. All rights reserved.
 //
-
+#include <string>
 #include <iostream>
 using std::cout;
 using std::endl;
@@ -36,15 +36,30 @@ int main() {
             i++;
         }
     }
-    
     DisplayContents(myArray);
-    
     TestDuplication(myArray);
-    
     TestSpecialCases(myArray);
-    
     TestOtherFeatures(myArray);
     
+    Array2D<std::string> strArray(3, 3);
+    
+    //init array
+    char c[2] = "a";
+    for (int row = 0; row<3; row++) {
+        for(int col = 0; col< 3; col++)
+        {
+            c[0]++;
+            std::string str = c;
+            str += str;
+            strArray[row][col] = str;
+            
+        }
+    }
+    
+    DisplayContents(strArray);
+    TestDuplication(strArray);
+    TestSpecialCases(strArray);
+    TestOtherFeatures(strArray);
     return 0;
 }
 
