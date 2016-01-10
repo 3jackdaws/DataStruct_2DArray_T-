@@ -18,7 +18,7 @@ Exception::Exception(const Exception & cp)
 
 Exception::~Exception()
 {
-    delete [] m_message;
+    delete[] m_message;
 }
 
 Exception & Exception::operator = (const Exception & rhs)

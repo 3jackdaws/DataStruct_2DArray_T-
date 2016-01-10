@@ -31,7 +31,7 @@ template <typename T>
 Array<T>::Array(int length, int start_index) : m_length(length), m_start_index(start_index)
 {
     if(length < 0)
-        throw new Exception("NegativeLengthException");
+        throw Exception("NegativeLengthException");
     if(length>0)
         m_array = new T[length];
     else{
@@ -87,7 +87,7 @@ T & Array<T>::operator [] (int index)
 {
 	if (index >= m_start_index + m_length || index < m_start_index)
 	{
-        throw new Exception("OutOfBoundsException");
+        throw Exception("OutOfBoundsException");
 	}
 	return m_array[index - m_start_index];
 }
@@ -114,7 +114,7 @@ template <typename T>
 void Array<T>::setLength(int new_len)
 {
     if(new_len < 0)
-        throw new Exception("NegativeLengthException");
+        throw Exception("NegativeLengthException");
     T * hold = new T[new_len];
     int smallest = 0;
     m_length < new_len ? smallest = m_length : smallest = new_len;
