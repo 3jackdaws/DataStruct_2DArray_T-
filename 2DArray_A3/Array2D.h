@@ -21,9 +21,10 @@ public:
     
     Array2D & operator = (const Array2D & rhs);
     Row<T> operator [] (int index);
-    int getRow();
+    const Row<T> operator [] (int index) const;
+    int getRow() const;
     void setRow(int rows);
-    int getColumn();
+    int getColumn() const;
     void setColumn(int col);
     T & Select(int row, int col);
     
@@ -78,9 +79,17 @@ Row<T> Array2D<T>::operator[](int index)
     return row;
 }
 
+template <typename T>
+const Row<T> Array2D<T>::operator[](int index) const
+{
+    return Row<T> (*this, index);
+}
+
+
+
 
 template <typename T>
-int Array2D<T>::getRow()
+int Array2D<T>::getRow() const
 {
     return _row;
 }
@@ -103,7 +112,7 @@ void Array2D<T>::setRow(int rows)
 }
 
 template <typename T>
-int Array2D<T>::getColumn()
+int Array2D<T>::getColumn() const
 {
     return _col;
 }

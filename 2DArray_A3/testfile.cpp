@@ -12,36 +12,42 @@ using std::endl;
 #include "Array2D.h"
 
 template <typename T>
-void DisplayContents(Array2D<T> &arr);
+void DisplayContents(Array2D<T> & arr);
 
 template <typename T>
-void TestDuplication(Array2D<T> &arr);
+void TestDuplication(Array2D<T> * arr);
 
 template <typename T>
-void TestSpecialCases(Array2D<T> &arr);
+void TestDuplication(const Array2D<T> * arr);
 
 template <typename T>
-void TestOtherFeatures(Array2D<T> &arr);
+void TestSpecialCases(Array2D<T> * arr);
+
+template <typename T>
+void TestOtherFeatures(Array2D<T> * arr);
+
+template <typename T>
+void TestConstness(const Array2D<T> &arr);
 
 int main() {
     
     //Initialize Array
     
-    Array2D<int> myArray(5,5);
+    Array2D<int> * myArray = new Array2D<int>(5,5);
     int i = 0;
     for (int row = 0; row<5; row++) {
         for(int col = 0; col< 5; col++)
         {
-            myArray[row][col] = i;
+            (*myArray)[row][col] = i;
             i++;
         }
     }
-    DisplayContents(myArray);
+    DisplayContents(*myArray);
     TestDuplication(myArray);
     TestSpecialCases(myArray);
     TestOtherFeatures(myArray);
     
-    Array2D<std::string> strArray(3, 3);
+    Array2D<std::string> * strArray = new Array2D<std::string>(3, 3);
     
     //init array
     char c[2] = "a";
@@ -51,12 +57,12 @@ int main() {
             c[0]++;
             std::string str = c;
             str += str;
-            strArray[row][col] = str;
+            (*strArray)[row][col] = str;
             
         }
     }
     
-    DisplayContents(strArray);
+    DisplayContents(*strArray);
     TestDuplication(strArray);
     TestSpecialCases(strArray);
     TestOtherFeatures(strArray);
@@ -78,37 +84,51 @@ void DisplayContents(Array2D<T> &arr)
 }
 
 template <typename T>
-void TestDuplication(Array2D<T> &arr)
+void DisplayContents(const Array2D<T> &arr)
+{
+    int row_s = arr.getRow();
+    int col_s = arr.getColumn();
+    
+    for (int row = 0; row<row_s; row++) {
+        for(int col = 0; col< col_s; col++)
+        {
+            cout<<"["<<row<<"]"<<"["<<col<<"]: "<<arr[row][col]<<endl;
+        }
+    }
+}
+
+template <typename T>
+void TestDuplication(Array2D<T> *arr)
 {
     cout<<"************* TESTING COPY CTOR **************"<<endl;
     cout<<"************* After pass by reference ************"<<endl;
-    DisplayContents(arr);
+    DisplayContents(*arr);
     
-    Array2D<T> arr2(arr);
+    Array2D<T> * arr2 = new Array2D<T>(*arr);
     cout<<"************* After copy ctor ************"<<endl;
-    DisplayContents(arr2);
+    DisplayContents(*arr2);
     
     cout<<"************ Change some values **********"<<endl;
     
-    arr2[0][0] = 100;
-    arr2[2][2] = 1000;
-    DisplayContents(arr2);
+    (*arr2)[0][0] = 100;
+    (*arr2)[2][2] = 1000;
+    DisplayContents(*arr2);
     
     cout<<"************ Testing OP =  **********"<<endl;
     
     arr = arr2;
-    DisplayContents(arr);
+    DisplayContents(*arr);
     
     
 }
 
 template <typename T>
-void TestSpecialCases(Array2D<T> &arr)
+void TestSpecialCases(Array2D<T> *arr)
 {
     cout<<"************* TESTING SPECIAL CASES **************"<<endl;
     cout<<"************* Testing out of bounds **************"<<endl;
     try{
-        cout<<arr[6][7]<<endl;
+        cout<<(*arr)[6][7]<<endl;
     }
     catch(Exception &e){
         cout<<e<<endl;
@@ -117,14 +137,14 @@ void TestSpecialCases(Array2D<T> &arr)
     cout<<"************* Testing set column to -1 **************"<<endl;
     
     try{
-        arr.setColumn(-1);
+        arr->setColumn(-1);
     }
     catch(Exception &e){
         cout<<e<<endl;
     }
     cout<<"************* Testing ser row to -1 **************"<<endl;
     try{
-        arr.setRow(-1);
+        arr->setRow(-1);
     }
     catch(Exception &e){
         cout<<e<<endl;
@@ -132,17 +152,29 @@ void TestSpecialCases(Array2D<T> &arr)
 }
 
 template <typename T>
-void TestOtherFeatures(Array2D<T> &arr)
+void TestOtherFeatures(Array2D<T> *arr)
 {
     cout<<"************* TESTING OTHER FEATURES **************"<<endl;
     cout<<"************* Testing set lower bounds **************"<<endl;
-    arr.setRow(3);
-    arr.setColumn(2);
-    DisplayContents(arr);
+    arr->setRow(3);
+    arr->setColumn(2);
+    DisplayContents(*arr);
     
     cout<<"\n************* Testing set higher bounds **************"<<endl;
-    arr.setRow(4);
-    arr.setColumn(6);
+    arr->setRow(4);
+    arr->setColumn(6);
+    DisplayContents(*arr);
+    
+    TestConstness(*arr);
+    
+}
+
+template <typename T>
+void TestConstness(const Array2D<T> &arr)
+{
+    cout<<"\n************* TESTING CONST METHODS **************"<<endl;
+    cout<<"\n************* Testing modify const values **************\nBefore"<<endl;
     DisplayContents(arr);
     
+    DisplayContents(arr);
 }
