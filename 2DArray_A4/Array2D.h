@@ -173,7 +173,7 @@ T ** Array2D<T>::DuplicateArray(int rows, int cols) const
         if(rows > _row)
             rows = _row;        //find the smallest
         if(cols > _col)
-            rows - _col;
+            rows = _col;
         
         for(int row = 0; row<rows; row++)
         {
