@@ -44,7 +44,11 @@ Array2D<T>::Array2D(int row, int col) : _col(col), _row(row)
 {
     if(row < 1 || col < 1)
         throw Exception("InvalidSizeException");
-    m_array = new T[row*col];
+    for(int i = 0; i< row; i++)
+    {
+        m_array = new T[col];
+    }
+    
 }
 
 template <typename T>
