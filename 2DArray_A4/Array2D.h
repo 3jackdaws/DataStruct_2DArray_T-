@@ -28,6 +28,8 @@ public:
     T & Select(int row, int col);
     
 private:
+    T ** DuplicateArray(int rows, int cols) const;
+    
     T ** m_array;
     int _row;
     int _col;
@@ -44,9 +46,10 @@ Array2D<T>::Array2D(int row, int col) : _col(col), _row(row)
 {
     if(row < 1 || col < 1)
         throw Exception("InvalidSizeException");
+    m_array = new T*[row];
     for(int i = 0; i< row; i++)
     {
-        m_array = new T[col];
+        m_array[i] = new T[col];
     }
     
 }
@@ -55,12 +58,19 @@ template <typename T>
 Array2D<T>::Array2D(const Array2D<T> & cp) : _col(cp._col), _row(cp._row), m_array(nullptr)
 {
     if(cp.m_array)
-        m_array = new T[_col*_row];
+    {
+        m_array = cp.DuplicateArray(_row, _col);
+    }
+    
 }
 
 template <typename T>
 Array2D<T>::~Array2D()
 {
+    for(int row = 0; row<_row; row++)
+    {
+        delete [] m_array[row];
+    }
     delete [] m_array;
 }
 
@@ -70,9 +80,7 @@ Array2D<T> & Array2D<T>::operator=(const Array2D<T> &rhs)
 {
     if(this != &rhs)
     {
-        _row = rhs._row;
-        _col = rhs._col;
-        m_array = rhs.m_array;
+        m_array = rhs.DuplicateArray(rhs._row, rhs._col);
     }
     return *this;
 }
@@ -88,6 +96,8 @@ Row<T> Array2D<T>::operator[](int index)
 template <typename T>
 const Row<T> Array2D<T>::operator[](int index) const
 {
+    if(index >= _row)
+        throw Exception("OutofBoundsException");
     return Row<T> (*this, index);
 }
 
@@ -109,8 +119,9 @@ void Array2D<T>::setRow(int rows)
     }
     else if(rows > 0)
     {
+         m_array = DuplicateArray(rows, _col);
         _row = rows;
-        m_array.setLength(_row*_col);
+        
     }
     else{
         throw Exception("InvalidRowNumberException");
@@ -132,8 +143,8 @@ void Array2D<T>::setColumn(int col)
     }
     else if(col > 0)
     {
+        m_array = DuplicateArray(_row, col);
         _col = col;
-        m_array.setLength(_row*_col);
     }
     else{
         throw Exception("InvalidColumnNumberException");
@@ -146,6 +157,34 @@ T & Array2D<T>::Select(int row, int col)
     return m_array[row*col+col];
 }
 
-
+template <typename T>
+T ** Array2D<T>::DuplicateArray(int rows, int cols) const
+{
+    T ** return_val = nullptr;
+    if(rows > 0 && cols > 0)
+    {
+        
+        T ** newArray = new T*[rows];
+        for(int i = 0; i< rows; i++)
+        {
+            newArray[i] = new T[cols];
+        }
+        
+        if(rows > _row)
+            rows = _row;        //find the smallest
+        if(cols > _col)
+            rows - _col;
+        
+        for(int row = 0; row<rows; row++)
+        {
+            for(int col = 0; col<cols; col++)
+            {
+                newArray[row][col] = m_array[row][col];
+            }
+        }
+        return_val = newArray;
+    }
+    return return_val;
+}
 
 
