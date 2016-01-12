@@ -29,7 +29,6 @@ public:
     
 private:
     T ** DuplicateArray(int rows, int cols) const;
-    
     T ** m_array;
     int _row;
     int _col;
@@ -89,8 +88,10 @@ Array2D<T> & Array2D<T>::operator=(const Array2D<T> &rhs)
 template <typename T>
 Row<T> Array2D<T>::operator[](int index)
 {
-    Row<T> row(*this, index);
-    return row;
+    if(index >= _row)
+        throw Exception("OutofBoundsException");
+    
+    return Row<T>(*this, index);
 }
 
 template <typename T>
@@ -186,5 +187,3 @@ T ** Array2D<T>::DuplicateArray(int rows, int cols) const
     }
     return return_val;
 }
-
-

@@ -12,7 +12,7 @@ using std::endl;
 #include "Array2D.h"
 
 template <typename T>
-void DisplayContents(Array2D<T> & arr);
+void DisplayContents(const Array2D<T> & arr);
 
 template <typename T>
 void TestDuplication(Array2D<T> * arr);
@@ -31,8 +31,9 @@ void TestConstness(const Array2D<T> &arr);
 
 int main() {
     
-    //Initialize Array
     
+    
+    //Initialize Array
     Array2D<int> * myArray = new Array2D<int>(5,5);
     int i = 0;
     for (int row = 0; row<5; row++) {
@@ -43,6 +44,9 @@ int main() {
         }
     }
     DisplayContents(*myArray);
+    
+    
+    
     TestDuplication(myArray);
     TestSpecialCases(myArray);
     TestOtherFeatures(myArray);
@@ -67,20 +71,6 @@ int main() {
     TestSpecialCases(strArray);
     TestOtherFeatures(strArray);
     return 0;
-}
-
-template <typename T>
-void DisplayContents(Array2D<T> &arr)
-{
-    int row_s = arr.getRow();
-    int col_s = arr.getColumn();
-    
-    for (int row = 0; row<row_s; row++) {
-        for(int col = 0; col< col_s; col++)
-        {
-            cout<<"["<<row<<"]"<<"["<<col<<"]: "<<arr[row][col]<<endl;
-        }
-    }
 }
 
 template <typename T>
@@ -109,9 +99,13 @@ void TestDuplication(Array2D<T> *arr)
     DisplayContents(*arr2);
     
     cout<<"************ Change some values **********"<<endl;
+    for (int row = 0; row<arr->getRow(); row++) {
+        for (int col = 0; col<arr->getColumn(); col++) {
+            (*arr2)[0][0] = 100;
+        }
+    }
     
-    (*arr2)[0][0] = 100;
-    (*arr2)[2][2] = 1000;
+    
     DisplayContents(*arr2);
     
     cout<<"************ Testing OP =  **********"<<endl;
@@ -175,6 +169,6 @@ void TestConstness(const Array2D<T> &arr)
     cout<<"\n************* TESTING CONST METHODS **************"<<endl;
     cout<<"\n************* Testing modify const values **************\nBefore"<<endl;
     DisplayContents(arr);
-    //arr[0][0] = 90;       won't compile, doesn't allow assignment
+    //arr[0][0] = 90;       //won't compile, doesn't allow assignment
     DisplayContents(arr);
 }
