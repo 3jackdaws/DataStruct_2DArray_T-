@@ -74,6 +74,9 @@ int main() {
     TestDuplication(strArray);
     TestSpecialCases(strArray);
     TestOtherFeatures(strArray);
+    
+    delete myArray;
+    delete strArray;
     return 0;
 }
 
@@ -136,9 +139,10 @@ void TestDuplication(Array2D<T> *arr)
     
     cout<<"************ Testing OP =  **********"<<endl;
     
+    //delete arr;
     arr = arr2;
     DisplayContents(*arr);
-    
+    delete arr2;
     
 }
 
