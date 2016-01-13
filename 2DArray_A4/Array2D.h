@@ -29,6 +29,8 @@ public:
     
 private:
     T ** DuplicateArray(int rows, int cols) const;
+    void Alter(int rows, int cols);
+    void Obliterate();
     T ** m_array;
     int _row;
     int _col;
@@ -79,7 +81,10 @@ Array2D<T> & Array2D<T>::operator=(const Array2D<T> &rhs)
 {
     if(this != &rhs)
     {
+        Obliterate();
         m_array = rhs.DuplicateArray(rhs._row, rhs._col);
+        _row = rhs._row;
+        _col = rhs._col;
     }
     return *this;
 }
@@ -120,9 +125,7 @@ void Array2D<T>::setRow(int rows)
     }
     else if(rows > 0)
     {
-         m_array = DuplicateArray(rows, _col);
-        _row = rows;
-        
+        Alter(rows, _col);
     }
     else{
         throw Exception("InvalidRowNumberException");
@@ -144,8 +147,7 @@ void Array2D<T>::setColumn(int col)
     }
     else if(col > 0)
     {
-        m_array = DuplicateArray(_row, col);
-        _col = col;
+        Alter(_row, col);
     }
     else{
         throw Exception("InvalidColumnNumberException");
@@ -155,17 +157,17 @@ void Array2D<T>::setColumn(int col)
 template <typename T>
 T & Array2D<T>::Select(int row, int col)
 {
-    return m_array[row*col+col];
+    return m_array[row][col];
 }
 
 template <typename T>
 T ** Array2D<T>::DuplicateArray(int rows, int cols) const
 {
-    T ** return_val = nullptr;
+    T ** newArray = nullptr;
     if(rows > 0 && cols > 0)
     {
         
-        T ** newArray = new T*[rows];
+        newArray = new T*[rows];
         for(int i = 0; i< rows; i++)
         {
             newArray[i] = new T[cols];
@@ -180,10 +182,46 @@ T ** Array2D<T>::DuplicateArray(int rows, int cols) const
         {
             for(int col = 0; col<cols; col++)
             {
-                newArray[row][col] = m_array[row][col];
+                T h = m_array[row][col];
+                newArray[row][col] = h;
             }
         }
-        return_val = newArray;
+        
     }
-    return return_val;
+    return newArray;
+}
+
+template <typename T>
+void Array2D<T>::Alter(int rows, int cols)
+{
+    int l_rows = rows;
+    int l_cols = cols;
+    
+    if(rows > _row)
+        l_rows = _row;
+    if(cols > _col)
+        l_cols = _col;
+    
+    Array2D<T> newArray(rows, cols);
+    for (int row = 0; row<l_rows; row++)
+    {
+        for (int col = 0; col<l_cols; col++)
+        {
+            T h = m_array[row][col];
+            newArray[row][col] = h;
+            
+        }
+    }
+    *this = newArray;
+}
+
+template <typename T>
+void Array2D<T>::Obliterate()
+{
+    for(int i = 0; i<_row;i++)
+    {
+        delete [] m_array[i];
+    }
+    delete [] m_array;
+    m_array = nullptr;
 }

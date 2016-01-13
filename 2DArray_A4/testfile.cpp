@@ -7,12 +7,16 @@
 //
 #include <string>
 #include <iostream>
+#include <iomanip>
 using std::cout;
 using std::endl;
 #include "Array2D.h"
 
 template <typename T>
 void DisplayContents(const Array2D<T> & arr);
+
+template <typename T>
+void DisplayContentsLinear(const Array2D<T> & arr);
 
 template <typename T>
 void TestDuplication(Array2D<T> * arr);
@@ -35,7 +39,7 @@ int main() {
     
     //Initialize Array
     Array2D<int> * myArray = new Array2D<int>(5,5);
-    int i = 0;
+    int i = 1;
     for (int row = 0; row<5; row++) {
         for(int col = 0; col< 5; col++)
         {
@@ -76,16 +80,38 @@ int main() {
 template <typename T>
 void DisplayContents(const Array2D<T> &arr)
 {
+    cout<<"------ Displaying Array contents-----"<<endl;
+    
+    int row_s = arr.getRow();
+    int col_s = arr.getColumn();
+    cout<<"------ Size: " << row_s << " by " << col_s<< " -----"<<endl;
+    for (int row = 0; row<row_s; row++) {
+        
+        for(int col = 0; col< col_s; col++)
+        {
+            cout<<std::setw(3)<<arr[row][col];
+        }
+        cout<<endl;
+    }
+}
+
+template <typename T>
+void DisplayContentsLinear(const Array2D<T> &arr)
+{
     int row_s = arr.getRow();
     int col_s = arr.getColumn();
     
     for (int row = 0; row<row_s; row++) {
+        
         for(int col = 0; col< col_s; col++)
         {
-            cout<<"["<<row<<"]"<<"["<<col<<"]: "<<arr[row][col]<<endl;
+            cout<<std::setw(3)<<arr[row][col];
         }
+        
     }
+    cout<<endl;
 }
+
 
 template <typename T>
 void TestDuplication(Array2D<T> *arr)
@@ -101,7 +127,7 @@ void TestDuplication(Array2D<T> *arr)
     cout<<"************ Change some values **********"<<endl;
     for (int row = 0; row<arr->getRow(); row++) {
         for (int col = 0; col<arr->getColumn(); col++) {
-            (*arr2)[0][0] = 100;
+            (*arr2)[row][col] = 100;
         }
     }
     
@@ -136,9 +162,23 @@ void TestSpecialCases(Array2D<T> *arr)
     catch(Exception &e){
         cout<<e<<endl;
     }
-    cout<<"************* Testing ser row to -1 **************"<<endl;
+    cout<<"************* Testing set row to -1 **************"<<endl;
     try{
         arr->setRow(-1);
+    }
+    catch(Exception &e){
+        cout<<e<<endl;
+    }
+    cout<<"************* Testing set row to 0 **************"<<endl;
+    try{
+        arr->setRow(0);
+    }
+    catch(Exception &e){
+        cout<<e<<endl;
+    }
+    cout<<"************* Testing set col to 0 **************"<<endl;
+    try{
+        arr->setColumn(-1);
     }
     catch(Exception &e){
         cout<<e<<endl;
@@ -148,6 +188,7 @@ void TestSpecialCases(Array2D<T> *arr)
 template <typename T>
 void TestOtherFeatures(Array2D<T> *arr)
 {
+    DisplayContents(*arr);
     cout<<"************* TESTING OTHER FEATURES **************"<<endl;
     cout<<"************* Testing set lower bounds **************"<<endl;
     arr->setRow(3);
@@ -160,6 +201,12 @@ void TestOtherFeatures(Array2D<T> *arr)
     DisplayContents(*arr);
     
     TestConstness(*arr);
+    
+    cout<<"\n************* Testing select **************"<<endl;
+    cout<<"\n************* put 23 in [2][2] **************"<<endl;
+    (*arr)[2][2] = 23;
+    cout<<arr->Select(2,2)<<endl;
+
     
 }
 
